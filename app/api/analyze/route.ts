@@ -1,30 +1,58 @@
 import { NextRequest, NextResponse } from "next/server";
 import Anthropic from "@anthropic-ai/sdk";
 import { cookies } from "next/headers";
+import { rateLimit, getIP } from "@/lib/ratelimit";
+import { isActiveSubscription } from "@/lib/supabase";
 
 export const dynamic = "force-dynamic";
 
 const FREE_LIMIT = 3;
+const APP_ID = "yakuari";
 
 function getAnthropic() {
   return new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY! });
 }
 
 export async function POST(req: NextRequest) {
+  const { ok } = rateLimit(getIP(req));
+  if (!ok) {
+    return NextResponse.json(
+      {
+        error:
+          "リクエストが多すぎます。しばらく待ってから再試行してください。",
+      },
+      { status: 429 }
+    );
+  }
+
   const cookieStore = await cookies();
-  const isPremium = cookieStore.get("stripe_premium")?.value === "1";
+  const email = cookieStore.get("user_email")?.value;
+
+  let isPremium = false;
+  if (email) {
+    isPremium = await isActiveSubscription(email, APP_ID);
+  } else {
+    // 移行期間: 既存のCookieユーザーはそのまま通す
+    isPremium = cookieStore.get("stripe_premium")?.value === "1";
+  }
 
   let usedCount = 0;
   if (!isPremium) {
     usedCount = parseInt(cookieStore.get("free_uses")?.value ?? "0", 10);
     if (usedCount >= FREE_LIMIT) {
-      return NextResponse.json({ error: "無料回数を使い切りました" }, { status: 402 });
+      return NextResponse.json(
+        { error: "無料回数を使い切りました" },
+        { status: 402 }
+      );
     }
   }
 
   const { message, context } = await req.json();
   if (!message?.trim()) {
-    return NextResponse.json({ error: "LINEの内容を入力してください" }, { status: 400 });
+    return NextResponse.json(
+      { error: "LINEの内容を入力してください" },
+      { status: 400 }
+    );
   }
 
   const prompt = `あなたは恋愛心理の専門AIです。以下のLINEの会話内容を分析して、送信者（彼）の気持ちと脈あり度を診断してください。
@@ -79,6 +107,9 @@ ${context ? `【補足情報】\n${context}` : ""}
 
     return res;
   } catch {
-    return NextResponse.json({ error: "AI分析中にエラーが発生しました" }, { status: 500 });
+    return NextResponse.json(
+      { error: "AI分析中にエラーが発生しました" },
+      { status: 500 }
+    );
   }
 }
