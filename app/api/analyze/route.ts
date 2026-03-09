@@ -70,6 +70,8 @@ ${context ? `【補足情報】\n${context}` : ""}
     if (!isPremium) {
       res.cookies.set("free_uses", String(usedCount + 1), {
         httpOnly: true,
+        secure: true,
+        sameSite: "lax",
         maxAge: 60 * 60 * 24 * 365,
         path: "/",
       });
