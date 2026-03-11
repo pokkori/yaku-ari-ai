@@ -25,7 +25,7 @@ export async function GET() {
   }
 
   // 移行期間: 既存のCookieユーザーはそのまま通す
-  const isPremium = cookieStore.get("stripe_premium")?.value === "1";
+  const isPremium = cookieStore.get("premium")?.value === "1" || cookieStore.get("stripe_premium")?.value === "1";
   return NextResponse.json({
     premium: isPremium,
     remaining: isPremium ? null : Math.max(0, FREE_LIMIT - usedCount),

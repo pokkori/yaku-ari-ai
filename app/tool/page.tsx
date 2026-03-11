@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import PayjpModal from "@/components/PayjpModal";
 
 type Result = { score: number; analysis: string; replies: string[]; advice: string } | null;
 
@@ -70,16 +71,8 @@ export default function ToolPage() {
     }
   }
 
-  async function startCheckout() {
-    setCheckoutLoading(true);
-    try {
-      const res = await fetch("/api/stripe/checkout", { method: "POST", headers: { "Content-Type": "application/json" } });
-      const data = await res.json();
-      if (data.url) window.location.href = data.url;
-    } catch {
-      setCheckoutLoading(false);
-    }
-  }
+  const [showPayjp, setShowPayjp] = useState(false);
+  const startCheckout = () => setShowPayjp(true);
 
   function copy(text: string, i: number) {
     navigator.clipboard.writeText(text);
@@ -210,6 +203,14 @@ export default function ToolPage() {
             </button>
           </div>
         </div>
+      )}
+      {showPayjp && (
+        <PayjpModal
+          publicKey={process.env.NEXT_PUBLIC_PAYJP_PUBLIC_KEY!}
+          planLabel="プレミアムプラン ¥980/月 — 脈あり解析 無制限"
+          onSuccess={() => { setShowPayjp(false); setIsPremium(true); }}
+          onClose={() => setShowPayjp(false)}
+        />
       )}
     </main>
   );
