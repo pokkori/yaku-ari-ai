@@ -12,6 +12,7 @@ const DESC = "彼からのLINEをコピペするだけ。AIが脈あり度を0�
 export const metadata: Metadata = {
   title: TITLE,
   description: DESC,
+  robots: { index: false, follow: false },
   openGraph: {
     title: TITLE,
     description: DESC,
