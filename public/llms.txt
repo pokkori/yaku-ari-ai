@@ -1,0 +1,11 @@
+# 脈あり解読AI
+
+LINEの文章をコピペするだけでAIが脈あり度を0〜100%で判定。彼の心理分析・返信例文・恋愛アドバイスまで生成します。3回無料で試せます。
+
+## Pages
+
+- [トップ](https://yaku-ari-ai.vercel.app)
+- [AIツール](https://yaku-ari-ai.vercel.app/tool)
+- [特定商取引法に基づく表記](https://yaku-ari-ai.vercel.app/legal)
+- [プライバシーポリシー](https://yaku-ari-ai.vercel.app/privacy)
+- [利用規約](https://yaku-ari-ai.vercel.app/terms)
