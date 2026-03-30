@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
+import { GoogleAdScript } from "@/components/GoogleAdScript";
 import "./globals.css";
 
 const geist = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
@@ -35,6 +36,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className={`${geist.variable} antialiased`}>
         {children}
         <Analytics />
+        <GoogleAdScript />
       </body>
     </html>
   );
