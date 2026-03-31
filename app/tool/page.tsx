@@ -19,7 +19,7 @@ function parseResult(text: string): Result {
 
 function ScoreRing({ score }: { score: number }) {
   const color = score >= 70 ? "text-pink-400" : score >= 40 ? "text-yellow-400" : "text-rose-400";
-  const label = score >= 70 ? "脈あり💕" : score >= 40 ? "微妙…🤔" : "厳しいかも😢";
+  const label = score >= 70 ? "脈あり" : score >= 40 ? "微妙…" : "厳しいかも";
   return (
     <div className="flex flex-col items-center">
       <div className={`text-7xl font-black ${color}`}>{score}%</div>
@@ -83,20 +83,20 @@ export default function ToolPage() {
   return (
     <main className="min-h-screen bg-rose-950 text-white">
       <header className="border-b border-rose-800 py-4 px-6 flex items-center justify-between">
-        <Link href="/" className="text-pink-400 font-bold text-sm hover:text-pink-300">💌 脈あり解読AI</Link>
+        <Link href="/" className="text-pink-400 font-bold text-sm hover:text-pink-300">脈あり解読AI</Link>
         <span className="text-rose-500 text-xs">
           {isPremium ? "✨ プレミアム" : remaining !== null ? `無料残り ${remaining}回` : ""}
         </span>
       </header>
 
       <div className="max-w-2xl mx-auto px-4 py-10">
-        <h1 className="text-2xl font-black text-center mb-2">LINEを解読する 💕</h1>
+        <h1 className="text-2xl font-black text-center mb-2">LINEを解読する</h1>
         <p className="text-rose-400 text-center text-sm mb-8">彼から来たLINEをそのまま貼り付けてください</p>
 
         <div className="space-y-4">
           <div>
             <label className="block text-rose-300 text-sm font-bold mb-2">
-              💬 彼からのLINE（必須）
+              彼からのLINE（必須）
             </label>
             <textarea
               value={message}
@@ -108,7 +108,7 @@ export default function ToolPage() {
           </div>
           <div>
             <label className="block text-rose-300 text-sm font-bold mb-2">
-              📝 補足情報（任意）
+              補足情報（任意）
             </label>
             <input
               type="text"
@@ -124,7 +124,7 @@ export default function ToolPage() {
             disabled={loading || !message.trim()}
             className="w-full bg-pink-500 hover:bg-pink-400 disabled:opacity-50 text-white font-black text-lg py-4 rounded-xl transition"
           >
-            {loading ? "AIが解読中…💭" : "💕 脈あり度を解読する"}
+            {loading ? "AIが解読中..." : "脈あり度を解読する"}
           </button>
         </div>
 
@@ -140,13 +140,13 @@ export default function ToolPage() {
 
             {/* Analysis */}
             <div className="bg-rose-900 rounded-2xl p-6 border border-rose-700">
-              <h2 className="text-pink-400 font-bold mb-3">🧠 彼の心理・気持ちの分析</h2>
+              <h2 className="text-pink-400 font-bold mb-3">彼の心理・気持ちの分析</h2>
               <p className="text-rose-200 text-sm leading-relaxed whitespace-pre-wrap">{result.analysis}</p>
             </div>
 
             {/* Reply suggestions */}
             <div className="bg-rose-900 rounded-2xl p-6 border border-rose-700">
-              <h2 className="text-pink-400 font-bold mb-4">✉️ あなたへのおすすめ返信例文</h2>
+              <h2 className="text-pink-400 font-bold mb-4">あなたへのおすすめ返信例文</h2>
               <div className="space-y-3">
                 {result.replies.map((reply, i) => (
                   <div key={i} className="bg-rose-800 rounded-xl p-4">
@@ -167,7 +167,7 @@ export default function ToolPage() {
 
             {/* Advice */}
             <div className="bg-pink-900/40 rounded-2xl p-6 border border-pink-800">
-              <h2 className="text-pink-400 font-bold mb-3">💡 恋愛アドバイス</h2>
+              <h2 className="text-pink-400 font-bold mb-3">恋愛アドバイス</h2>
               <p className="text-rose-200 text-sm leading-relaxed whitespace-pre-wrap">{result.advice}</p>
             </div>
 
@@ -185,7 +185,9 @@ export default function ToolPage() {
       {showPaywall && (
         <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 px-4">
           <div className="bg-rose-900 rounded-2xl p-8 max-w-md w-full text-center border border-pink-600">
-            <div className="text-4xl mb-4">💌</div>
+            <svg className="w-10 h-10 text-pink-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+            </svg>
             <h2 className="text-xl font-black mb-2">無料の3回を使い切りました</h2>
             <p className="text-rose-300 text-sm mb-6">
               プレミアムプランで無制限に解読できます。<br />
