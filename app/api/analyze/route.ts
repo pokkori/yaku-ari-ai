@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import Anthropic from "@anthropic-ai/sdk";
 import { cookies } from "next/headers";
-import { rateLimit, getIP } from "@/lib/ratelimit";
+import { rateLimit } from "@/lib/ratelimit";
 import { isActiveSubscription } from "@/lib/supabase";
 
 export const dynamic = "force-dynamic";
@@ -54,16 +54,8 @@ function getAnthropic() {
 }
 
 export async function POST(req: NextRequest) {
-  const { ok } = rateLimit(getIP(req));
-  if (!ok) {
-    return NextResponse.json(
-      {
-        error:
-          "リクエストが多すぎます。しばらく待ってから再試行してください。",
-      },
-      { status: 429 }
-    );
-  }
+  const rateLimitRes = await rateLimit(req);
+  if (rateLimitRes) return rateLimitRes;
 
   const cookieStore = await cookies();
   const email = cookieStore.get("user_email")?.value;

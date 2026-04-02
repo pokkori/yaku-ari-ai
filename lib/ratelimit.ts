@@ -1,28 +1,62 @@
-// Simple in-memory rate limiter (resets per serverless cold start)
-// Limits: 10 requests per IP per minute for AI endpoints
-const store = new Map<string, { count: number; reset: number }>();
+import { NextRequest, NextResponse } from 'next/server';
 
-export function rateLimit(ip: string, limit = 10, windowMs = 60_000): { ok: boolean; remaining: number } {
+// Upstash Redisが設定されていない場合はインメモリフォールバック
+const memoryStore = new Map<string, { count: number; resetAt: number }>();
+
+export async function rateLimit(
+  req: NextRequest,
+  options = { requests: 10, window: 60 } // 1分10回
+): Promise<NextResponse | null> {
+  const ip =
+    req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ??
+    req.headers.get('x-real-ip') ??
+    'unknown';
   const now = Date.now();
-  const entry = store.get(ip);
+  const key = `rl:${ip}`;
 
-  if (!entry || now > entry.reset) {
-    store.set(ip, { count: 1, reset: now + windowMs });
-    return { ok: true, remaining: limit - 1 };
+  // Upstash Redisがある場合
+  if (process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN) {
+    try {
+      const { Ratelimit } = await import('@upstash/ratelimit');
+      const { Redis } = await import('@upstash/redis');
+      const redis = Redis.fromEnv();
+      const ratelimit = new Ratelimit({
+        redis,
+        limiter: Ratelimit.slidingWindow(options.requests, `${options.window} s`),
+      });
+      const { success } = await ratelimit.limit(key);
+      if (!success) {
+        return NextResponse.json(
+          { error: 'リクエスト数が制限を超えました。しばらく後にお試しください。' },
+          { status: 429, headers: { 'Retry-After': String(options.window) } }
+        );
+      }
+      return null;
+    } catch {
+      // Upstash失敗時はインメモリフォールバックへ
+    }
   }
 
-  if (entry.count >= limit) {
-    return { ok: false, remaining: 0 };
+  // インメモリフォールバック
+  const entry = memoryStore.get(key);
+  if (!entry || entry.resetAt < now) {
+    memoryStore.set(key, { count: 1, resetAt: now + options.window * 1000 });
+    return null;
   }
-
   entry.count++;
-  return { ok: true, remaining: limit - entry.count };
+  if (entry.count > options.requests) {
+    return NextResponse.json(
+      { error: 'リクエスト数が制限を超えました。しばらく後にお試しください。' },
+      { status: 429, headers: { 'Retry-After': String(options.window) } }
+    );
+  }
+  return null;
 }
 
-export function getIP(req: Request): string {
+export function getIP(req: NextRequest): string {
   return (
-    req.headers.get("x-forwarded-for")?.split(",")[0].trim() ||
-    req.headers.get("x-real-ip") ||
-    "unknown"
+    req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
+    req.headers.get('x-real-ip') ||
+    'unknown'
   );
 }
