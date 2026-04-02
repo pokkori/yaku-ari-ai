@@ -1,11 +1,18 @@
 import type { Metadata } from "next";
-import { Geist } from "next/font/google";
+import { Geist, Noto_Sans_JP } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { GoogleAdScript } from "@/components/GoogleAdScript";
 import "./globals.css";
 
 const geist = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
+
+const notoSansJP = Noto_Sans_JP({
+  subsets: ["latin"],
+  weight: ["400", "500", "700"],
+  display: "swap",
+  variable: "--font-noto-sans-jp",
+});
 
 const SITE_URL = "https://yaku-ari-ai.vercel.app";
 const TITLE = "脈あり解読AI | LINEの文章をAIが本気で分析。脈あり度・心理・返信例文まで";
@@ -122,14 +129,14 @@ const faqLd = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="ja">
+    <html lang="ja" className={`${notoSansJP.variable}`}>
       <head>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }}
         />
       </head>
-      <body className={`${geist.variable} antialiased`}>
+      <body className={`${geist.variable} ${notoSansJP.className} antialiased`}>
         {children}
         <Analytics />
         <SpeedInsights />
