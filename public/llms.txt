@@ -1,27 +1,27 @@
 # 脈あり解読AI
+> LINEやSNSのメッセージから相手の気持ち・脈あり度をAIが分析するツール
 
-> このサービスは「告白LINE返信AI」に統合されました
+## サービス概要
+- **カテゴリ**: 恋愛AI
+- **URL**: https://yaku-ari-ai.vercel.app
+- **提供形態**: Webブラウザで利用可能（登録不要で試せます）
+- **開発**: Claude Code + Next.js 16 + Vercel
 
-## 概要
-脈あり解読AIは、より高機能な「告白LINE返信AI」に統合されました。LINEのやり取りパターンから脈あり度を診断する機能はすべて告白LINE返信AIでご利用いただけます。
+## 主要ページ
+- [トップページ](https://yaku-ari-ai.vercel.app/): メイン機能・サービス説明
+- [ツール](https://yaku-ari-ai.vercel.app/tool): AI機能の利用画面（一部サービス）
+- [プライバシーポリシー](https://yaku-ari-ai.vercel.app/privacy): 個人情報の取り扱い
+- [特定商取引法に基づく表記](https://yaku-ari-ai.vercel.app/legal): 法的情報
 
-## 対象ユーザー
-好きな人の気持ちを確認したい方、脈あり度を客観的に知りたい方
+## 利用シーン
+LINEやSNSのメッセージから相手の気持ち・脈あり度をAIが分析するツール
 
-## 主な機能
-- 脈あり度診断機能（告白LINE返信AIで提供）
-- 告白LINE・返信文の自動生成（告白LINE返信AIで提供）
+## 技術スタック
+- フロントエンド: Next.js 16, React 19, TypeScript, Tailwind CSS
+- AI: Claude claude-sonnet-4-6 (Anthropic)
+- バックエンド: Vercel Edge Functions, Supabase
+- 決済: KOMOJU（クレジットカード・コンビニ払い対応）
 
-## 使い方
-1. 告白LINE返信AI（https://kokuhaku-line-ai.vercel.app）にアクセスする
-2. 脈あり度クイック診断を利用する
-3. 告白文・返信文の生成もあわせて利用できる
-
-## 料金
-無料で3回まで利用可能。プレミアムプランで無制限。
-
-## URL
-https://yaku-ari-ai.vercel.app
-
-## 統合先サービス
-https://kokuhaku-line-ai.vercel.app
+## robots.txt
+AIクローラーによるインデックスを歓迎します。
+GPTBot, ClaudeBot, PerplexityBot, Googlebot-Extended のアクセスを許可しています。
