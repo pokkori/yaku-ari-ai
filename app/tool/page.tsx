@@ -156,7 +156,7 @@ export default function ToolPage() {
                         onClick={() => copy(reply, i)}
                         className="text-xs bg-rose-700 hover:bg-rose-600 px-3 py-1 rounded-lg transition"
                       >
-                        {copied === i ? "✓ コピー済み" : "コピー"}
+                        {copied === i ? "コピー済み" : "コピー"}
                       </button>
                     </div>
                     <p className="text-white text-sm whitespace-pre-wrap">{reply}</p>
