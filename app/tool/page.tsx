@@ -85,7 +85,7 @@ export default function ToolPage() {
       <header className="border-b border-rose-800 py-4 px-6 flex items-center justify-between">
         <Link href="/" className="text-pink-400 font-bold text-sm hover:text-pink-300">脈あり解読AI</Link>
         <span className="text-rose-500 text-xs">
-          {isPremium ? "✨ プレミアム" : remaining !== null ? `無料残り ${remaining}回` : ""}
+          {isPremium ? "■ プレミアム" : remaining !== null ? `無料残り ${remaining}回` : ""}
         </span>
       </header>
 
