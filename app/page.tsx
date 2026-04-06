@@ -12,7 +12,7 @@ export default function DiscontinuedPage() {
       textAlign: "center",
       padding: "2rem",
     }}>
-      <div style={{ fontSize: "3rem", marginBottom: "1rem" }}>🚫</div>
+      <div style={{ display: "flex", justifyContent: "center", marginBottom: "1rem" }}><svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#EF4444" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg></div>
       <h1 style={{ fontSize: "1.8rem", fontWeight: "bold", marginBottom: "0.75rem" }}>
         このサービスは廃止されました
       </h1>
