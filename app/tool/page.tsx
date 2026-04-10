@@ -171,6 +171,24 @@ export default function ToolPage() {
               <p className="text-rose-200 text-sm leading-relaxed whitespace-pre-wrap">{result.advice}</p>
             </div>
 
+            {/* Next Action Guide */}
+            <div className="bg-white/5 border border-white/10 rounded-xl p-4">
+              <p className="text-xs font-bold text-white/60 mb-3 uppercase tracking-wide">次のステップ</p>
+              <div className="space-y-2">
+                {[
+                  { step: 1, text: "返信文をコピーして実際に送ってみる", href: "/tool" },
+                  { step: 2, text: "相手の返信パターンを再度AIで解読する", href: "/tool" },
+                  { step: 3, text: "恋愛コーチに相談して関係を進展させる", href: "https://pairs.lv/?utm_source=myaku-ai" },
+                ].map(({ step, text, href }) => (
+                  <a key={step} href={href} target={href.startsWith("http") ? "_blank" : "_self"} rel={href.startsWith("http") ? "noopener noreferrer" : undefined} className="flex items-center gap-3 p-3 rounded-lg bg-white/5 hover:bg-white/10 transition group">
+                    <div className="w-6 h-6 rounded-full bg-pink-500/30 text-pink-300 text-xs font-black flex items-center justify-center shrink-0">{step}</div>
+                    <span className="text-sm text-white/80 flex-1">{text}</span>
+                    <svg className="w-4 h-4 text-white/30 group-hover:text-white/60 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 18l6-6-6-6"/></svg>
+                  </a>
+                ))}
+              </div>
+            </div>
+
             <button
               onClick={() => { setResult(null); setMessage(""); setContext(""); }}
               className="w-full border border-rose-700 text-rose-400 hover:text-white hover:border-rose-500 font-semibold py-3 rounded-xl transition text-sm"
